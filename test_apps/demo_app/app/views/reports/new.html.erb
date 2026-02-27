@@ -1,0 +1,9 @@
+<h1>New Report</h1>
+
+<%= turbo_frame_tag "modal" do %>
+  <%= render "form", report: @report %>
+<% end %>
+
+<div>
+  <%= link_to "Back to Reports", reports_path %>
+</div>

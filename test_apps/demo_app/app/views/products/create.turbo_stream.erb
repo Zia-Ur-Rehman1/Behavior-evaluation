@@ -1,0 +1,5 @@
+<%= turbo_stream.prepend "products",
+      partial: "product",
+      locals: { product: @product } %>
+
+<%= turbo_stream.update "modal", "" %>

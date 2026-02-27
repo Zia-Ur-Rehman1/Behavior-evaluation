@@ -1,0 +1,22 @@
+<%%= turbo_stream.append "mcp-chat-messages" do %>
+  <div class="mcp-msg mcp-msg--user">
+    <span class="mcp-msg__bubble"><%%= html_escape(@user_message) %></span>
+  </div>
+  <div class="mcp-msg mcp-msg--assistant">
+    <span class="mcp-msg__avatar">AI</span>
+    <span class="mcp-msg__bubble"><%%= simple_format(html_escape(@assistant_message)) %></span>
+  </div>
+<%% end %>
+
+<%%= turbo_stream.replace "mcp-chat-input" do %>
+  <input id="mcp-chat-input" type="text" name="message" placeholder="Ask anything…"
+         autocomplete="off"
+         style="flex:1;border:1px solid #d1d5db;border-radius:1.5rem;padding:0.45rem 0.9rem;font-size:0.875rem;outline:none;"
+         autofocus>
+<%% end %>
+
+<%% if @context %>
+  <%%= turbo_stream.replace "mcp-context-bar" do %>
+    <%%= render "mcp/context_window", **@context %>
+  <%% end %>
+<%% end %>

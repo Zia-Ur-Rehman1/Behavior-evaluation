@@ -1,0 +1,39 @@
+<%%= form_with(model: <%= singular_table_name %>) do |form| %>
+  <%% if <%= singular_table_name %>.errors.any? %>
+    <div style="color: red">
+      <h2>
+        <%%= pluralize(<%= singular_table_name %>.errors.count, "error") %>
+        prohibited this <%= singular_table_name %> from being saved:
+      </h2>
+
+      <ul>
+        <%% <%= singular_table_name %>.errors.each do |error| %>
+          <li><%%= error.full_message %></li>
+        <%% end %>
+      </ul>
+    </div>
+  <%% end %>
+
+<% attributes.each do |attribute| -%>
+  <div>
+    <%%= form.label :<%= attribute.column_name %>, style: "display: block" %>
+<% if attribute.type == :text -%>
+    <%%= form.text_area :<%= attribute.column_name %> %>
+<% elsif attribute.type == :boolean -%>
+    <%%= form.check_box :<%= attribute.column_name %> %>
+<% elsif attribute.type == :date -%>
+    <%%= form.date_field :<%= attribute.column_name %> %>
+<% elsif attribute.type == :datetime -%>
+    <%%= form.datetime_field :<%= attribute.column_name %> %>
+<% elsif attribute.type == :integer -%>
+    <%%= form.number_field :<%= attribute.column_name %> %>
+<% else -%>
+    <%%= form.text_field :<%= attribute.column_name %> %>
+<% end -%>
+  </div>
+
+<% end -%>
+  <div>
+    <%%= form.submit %>
+  </div>
+<%% end %>

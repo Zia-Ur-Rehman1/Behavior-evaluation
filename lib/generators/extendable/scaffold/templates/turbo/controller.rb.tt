@@ -1,0 +1,75 @@
+<% module_namespacing do -%>
+class <%= controller_class_name %>Controller < ApplicationController
+  before_action :set_<%= singular_table_name %>, only: %i[show edit update destroy]
+
+  # GET /<%= plural_table_name %>
+  def index
+    @<%= plural_table_name %> = <%= class_name %>.all
+  end
+
+  # GET /<%= plural_table_name %>/1
+  def show
+  end
+
+  # GET /<%= plural_table_name %>/new
+  def new
+    @<%= singular_table_name %> = <%= class_name %>.new
+  end
+
+  # GET /<%= plural_table_name %>/1/edit
+  def edit
+  end
+
+  # POST /<%= plural_table_name %>
+  def create
+    @<%= singular_table_name %> = <%= class_name %>.new(<%= singular_table_name %>_params)
+
+    respond_to do |format|
+      if @<%= singular_table_name %>.save
+        format.html { redirect_to <%= index_helper %>_url, notice: "<%= human_name %> was successfully created." }
+        format.turbo_stream
+      else
+        format.html { render :new, status: :unprocessable_entity }
+        format.turbo_stream { render :new, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  # PATCH/PUT /<%= plural_table_name %>/1
+  def update
+    respond_to do |format|
+      if @<%= singular_table_name %>.update(<%= singular_table_name %>_params)
+        format.html { redirect_to <%= singular_table_name %>_url(@<%= singular_table_name %>), notice: "<%= human_name %> was successfully updated.", status: :see_other }
+        format.turbo_stream
+      else
+        format.html { render :edit, status: :unprocessable_entity }
+        format.turbo_stream { render :edit, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  # DELETE /<%= plural_table_name %>/1
+  def destroy
+    @<%= singular_table_name %>.destroy
+
+    respond_to do |format|
+      format.html { redirect_to <%= index_helper %>_url, notice: "<%= human_name %> was successfully destroyed.", status: :see_other }
+      format.turbo_stream
+    end
+  end
+
+  private
+
+  def set_<%= singular_table_name %>
+    @<%= singular_table_name %> = <%= class_name %>.find(params[:id])
+  end
+
+  def <%= singular_table_name %>_params
+<%- if attributes_names.empty? -%>
+    params.fetch(:<%= singular_table_name %>, {})
+<%- else -%>
+    params.require(:<%= singular_table_name %>).permit(<%= attributes_names.map { |n| ":#{n}" }.join(", ") %>)
+<%- end -%>
+  end
+end
+<% end -%>

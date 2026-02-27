@@ -1,0 +1,14 @@
+<%%= turbo_frame_tag dom_id(<%= singular_table_name %>) do %>
+  <tr id="<%%= dom_id(<%= singular_table_name %>) %>" style="border-bottom:1px solid #e5e7eb;">
+<% attributes.reject(&:password_digest?).each do |attribute| -%>
+    <td style="padding:0.6rem 0.75rem;"><%%= <%= singular_table_name %>.<%= attribute.column_name %> %></td>
+<% end -%>
+    <td style="padding:0.6rem 0.75rem;text-align:right;white-space:nowrap;">
+      <%%= link_to "Show", <%= singular_table_name %>, style:"color:#3b82f6;margin-right:0.5rem;" %>
+      <%%= link_to "Edit",  edit_<%= singular_table_name %>_path(<%= singular_table_name %>), style:"color:#10b981;margin-right:0.5rem;" %>
+      <%%= button_to "Delete", <%= singular_table_name %>, method: :delete,
+            data: { turbo_confirm: "Delete this <%= human_name.downcase %>?" },
+            style: "background:none;border:none;color:#ef4444;cursor:pointer;padding:0;" %>
+    </td>
+  </tr>
+<%% end %>

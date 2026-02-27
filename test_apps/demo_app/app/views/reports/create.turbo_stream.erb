@@ -1,0 +1,5 @@
+<%= turbo_stream.prepend "reports",
+      partial: "report",
+      locals: { report: @report } %>
+
+<%= turbo_stream.update "modal", "" %>

@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+# Runs the smoke test against Rails 5, 7, and 8.
+set -o pipefail
+
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+cd "$ROOT"
+
+declare -A RESULTS
+
+for rails_ver in 5 6 7 8; do
+  echo ""
+  echo "########################################################################"
+  echo "# RAILS $rails_ver"
+  echo "########################################################################"
+  gemfile="gemfiles/rails_${rails_ver}.gemfile"
+
+  echo "-> bundle install (BUNDLE_GEMFILE=$gemfile)"
+  BUNDLE_GEMFILE="$gemfile" bundle install --quiet 2>&1 | tail -5
+
+  if [ ${PIPESTATUS[0]} -ne 0 ]; then
+    RESULTS[$rails_ver]="BUNDLE FAILED"
+    continue
+  fi
+
+  echo "-> smoke test"
+  if BUNDLE_GEMFILE="$gemfile" bundle exec ruby test_apps/smoke_test.rb; then
+    RESULTS[$rails_ver]="PASS"
+  else
+    RESULTS[$rails_ver]="FAIL"
+  fi
+done
+
+echo ""
+echo "========================================================================"
+echo "SUMMARY"
+echo "========================================================================"
+for v in 5 6 7 8; do
+  printf "  Rails %s: %s\n" "$v" "${RESULTS[$v]}"
+done

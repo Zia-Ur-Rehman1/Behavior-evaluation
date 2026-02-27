@@ -1,0 +1,13 @@
+<p style="color: green"><%%= notice %></p>
+
+<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem;">
+  <h1 style="margin:0;"><%= human_name.pluralize %></h1>
+  <%%= link_to "New <%= human_name %>", new_<%= singular_table_name %>_path,
+        style: "background:#3b82f6;color:#fff;padding:0.4rem 1rem;border-radius:0.375rem;text-decoration:none;" %>
+</div>
+
+<div id="modal"></div>
+
+<div id="<%= plural_table_name %>" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.25rem;">
+  <%%= render @<%= plural_table_name %> %>
+</div>

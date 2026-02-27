@@ -1,0 +1,25 @@
+<p style="color: green"><%%= notice %></p>
+
+<div style="max-width:600px;margin:1rem auto;border:1px solid #e5e7eb;border-radius:0.5rem;overflow:hidden;">
+  <div style="background:#f3f4f6;padding:0.75rem 1rem;font-weight:600;font-size:1.1rem;">
+    <%= human_name %> #<%%= @<%= singular_table_name %>.id %>
+  </div>
+  <%%= turbo_frame_tag dom_id(@<%= singular_table_name %>) do %>
+    <table style="width:100%;border-collapse:collapse;font-size:0.9rem;">
+<% attributes.reject(&:password_digest?).each do |attribute| -%>
+      <tr style="border-bottom:1px solid #e5e7eb;">
+        <th style="padding:0.6rem 1rem;text-align:left;color:#6b7280;width:35%;"><%= attribute.human_name %></th>
+        <td style="padding:0.6rem 1rem;"><%%= @<%= singular_table_name %>.<%= attribute.column_name %> %></td>
+      </tr>
+<% end -%>
+    </table>
+  <%% end %>
+  <div style="padding:0.75rem 1rem;display:flex;gap:0.75rem;">
+    <%%= link_to "Edit", edit_<%= singular_table_name %>_path(@<%= singular_table_name %>),
+          style:"color:#3b82f6;" %>
+    <%%= button_to "Delete", @<%= singular_table_name %>, method: :delete,
+          data: { turbo_confirm: "Are you sure?" },
+          style:"background:none;border:none;color:#ef4444;cursor:pointer;padding:0;" %>
+    <%%= link_to "Back to list", <%= index_helper %>_path, style:"color:#6b7280;margin-left:auto;" %>
+  </div>
+</div>

@@ -1,0 +1,31 @@
+<%%= turbo_frame_tag dom_id(<%= singular_table_name %>) do %>
+  <div id="<%%= dom_id(<%= singular_table_name %>) %>"
+       style="border:1px solid #e5e7eb;border-radius:0.75rem;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.07);">
+    <div style="background:#f9fafb;padding:0.75rem 1rem;border-bottom:1px solid #e5e7eb;display:flex;justify-content:space-between;align-items:center;">
+      <span style="font-weight:600;color:#111827;">
+        #<%%= <%= singular_table_name %>.id %>
+<% if attributes.any? -%>
+        — <%%= <%= singular_table_name %>.<%= attributes.first.column_name %> %>
+<% end -%>
+      </span>
+      <div style="display:flex;gap:0.5rem;font-size:0.8rem;">
+        <%%= link_to "Edit", edit_<%= singular_table_name %>_path(<%= singular_table_name %>), style:"color:#3b82f6;" %>
+        <%%= button_to "✕", <%= singular_table_name %>, method: :delete,
+              data: { turbo_confirm: "Delete this <%= human_name.downcase %>?" },
+              style: "background:none;border:none;color:#ef4444;cursor:pointer;font-size:1rem;line-height:1;" %>
+      </div>
+    </div>
+    <div style="padding:0.75rem 1rem;">
+<% attributes.reject(&:password_digest?).each_with_index do |attribute, i| -%>
+<% next if i == 0 -%>
+      <p style="margin:0.25rem 0;font-size:0.875rem;">
+        <span style="color:#6b7280;"><%= attribute.human_name %>:</span>
+        <%%= <%= singular_table_name %>.<%= attribute.column_name %> %>
+      </p>
+<% end -%>
+    </div>
+    <div style="padding:0.5rem 1rem;border-top:1px solid #f3f4f6;">
+      <%%= link_to "View details →", <%= singular_table_name %>, style:"font-size:0.8rem;color:#6b7280;" %>
+    </div>
+  </div>
+<%% end %>

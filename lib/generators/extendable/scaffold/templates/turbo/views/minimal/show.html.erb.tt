@@ -1,0 +1,10 @@
+<%%= notice && content_tag(:p, notice, style:"color:green") %>
+<%%= turbo_frame_tag dom_id(@<%= singular_table_name %>) do %>
+<% attributes.reject(&:password_digest?).each do |attribute| -%>
+  <p><strong><%= attribute.human_name %>:</strong> <%%= @<%= singular_table_name %>.<%= attribute.column_name %> %></p>
+<% end -%>
+  <%%= link_to "Edit", edit_<%= singular_table_name %>_path(@<%= singular_table_name %>) %> |
+  <%%= button_to "Delete", @<%= singular_table_name %>, method: :delete, data: { turbo_confirm: "Sure?" },
+        style:"background:none;border:none;color:red;cursor:pointer;" %>
+  <%%= link_to "← Back", <%= index_helper %>_path %>
+<%% end %>

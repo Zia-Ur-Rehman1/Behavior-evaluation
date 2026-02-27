@@ -1,0 +1,17 @@
+<h1>Login</h1>
+
+<% if flash[:alert] %>
+  <p style="color: red;"><%= flash[:alert] %></p>
+<% end %>
+
+<%= form_with url: login_path, method: :post, local: true do |f| %>
+  <div style="margin-bottom: 1rem;">
+    <%= f.label :email %><br>
+    <%= f.email_field :email, required: true, style: "padding: 0.5rem; width: 300px;" %>
+  </div>
+  <div style="margin-bottom: 1rem;">
+    <%= f.label :password %><br>
+    <%= f.password_field :password, required: true, style: "padding: 0.5rem; width: 300px;" %>
+  </div>
+  <%= f.submit "Log in", style: "padding: 0.5rem 1.5rem; background: #3b82f6; color: #fff; border: none; border-radius: 4px; cursor: pointer;" %>
+<% end %>

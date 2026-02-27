@@ -1,0 +1,7 @@
+<h1>Edit <%= human_name %></h1>
+
+<%%= turbo_frame_tag dom_id(@<%= singular_table_name %>) do %>
+  <%%= render "form", <%= singular_table_name %>: @<%= singular_table_name %> %>
+<%% end %>
+
+<div><%%= link_to "Back to list", <%= index_helper %>_path %></div>

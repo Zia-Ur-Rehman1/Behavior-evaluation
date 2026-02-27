@@ -1,0 +1,34 @@
+# frozen_string_literal: true
+
+module Tools
+  module <%= class_name.pluralize %>
+    # Deletes a <%= human_name.downcase %>.
+    class DestroyTool < BaseTool
+      tool_name "<%= singular_table_name %>_destroy"
+      description "Delete a <%= human_name.downcase %>"
+
+      input_schema(
+        properties: {
+          id: { type: "integer", description: "The ID of the <%= human_name.downcase %> to delete" }
+        },
+        required: ["id"]
+      )
+
+      class << self
+        def call(id:, server_context: nil)
+          record = <%= class_name %>.find(id)
+          record.destroy!
+          MCP::Tool::Response.new([{
+            type: "text",
+            text: JSON.generate({ message: "<%= human_name %> #{id} was successfully deleted" })
+          }])
+        rescue ActiveRecord::RecordNotFound => e
+          MCP::Tool::Response.new([{
+            type: "text",
+            text: JSON.generate({ error: e.message })
+          }])
+        end
+      end
+    end
+  end
+end

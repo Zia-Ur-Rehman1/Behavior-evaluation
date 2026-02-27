@@ -1,0 +1,9 @@
+<h1>New Product</h1>
+
+<%= turbo_frame_tag "modal" do %>
+  <%= render "form", product: @product %>
+<% end %>
+
+<div>
+  <%= link_to "Back to Products", products_path %>
+</div>

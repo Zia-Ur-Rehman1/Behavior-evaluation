@@ -1,0 +1,39 @@
+# frozen_string_literal: true
+
+module Tools
+  module <%= class_name.pluralize %>
+    # Creates a new <%= human_name.downcase %>.
+    class CreateTool < BaseTool
+      tool_name "<%= singular_table_name %>_create"
+      description "Create a new <%= human_name.downcase %>"
+
+      input_schema(
+        properties: {
+<% mcp_attributes.each do |attr| -%>
+          <%= attr.name %>: { type: "<%= mcp_type_for(attr) %>", description: "<%= attr.human_name %>" },
+<% end -%>
+        },
+        required: [<%= mcp_attributes.map { |a| "\"#{a.name}\"" }.join(", ") %>]
+      )
+
+      class << self
+        def call(<%= mcp_attributes.map { |a| "#{a.name}:" }.join(", ") %>, server_context: nil)
+          record = <%= class_name %>.create!(
+<% mcp_attributes.each do |attr| -%>
+            <%= attr.name %>: <%= attr.name %>,
+<% end -%>
+          )
+          MCP::Tool::Response.new([{
+            type: "text",
+            text: record.to_json
+          }])
+        rescue ActiveRecord::RecordInvalid => e
+          MCP::Tool::Response.new([{
+            type: "text",
+            text: JSON.generate({ error: e.message })
+          }])
+        end
+      end
+    end
+  end
+end

@@ -1,0 +1,5 @@
+<%%= turbo_stream.prepend "<%= plural_table_name %>",
+      partial: "<%= singular_table_name %>",
+      locals: { <%= singular_table_name %>: @<%= singular_table_name %> } %>
+
+<%%= turbo_stream.update "modal", "" %>

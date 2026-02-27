@@ -1,0 +1,23 @@
+# frozen_string_literal: true
+
+source "https://rubygems.org"
+
+gemspec path: ".."
+
+gem "rails",   "~> 6.1.0"
+gem "sqlite3", "~> 1.4"
+
+# Ruby 3.1+ removed these from stdlib default gems; Rails 6 assumed them.
+gem "logger"
+gem "mutex_m"
+gem "bigdecimal"
+gem "drb"
+gem "base64"
+
+# concurrent-ruby 1.3.5 removed the Logger autoload that Rails 6.1 relied on.
+gem "concurrent-ruby", "1.3.4"
+
+group :development, :test do
+  gem "rspec", ">= 3.12"
+  gem "generator_spec"
+end

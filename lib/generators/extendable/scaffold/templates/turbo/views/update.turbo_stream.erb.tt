@@ -1,0 +1,3 @@
+<%%= turbo_stream.replace @<%= singular_table_name %> %>
+
+<%%= turbo_stream.update "modal", "" %>

@@ -1,0 +1,11 @@
+# frozen_string_literal: true
+
+module Tools
+  module <%= class_name.pluralize %>
+    # Base MCP tool for the <%= class_name %> resource.
+    # All <%= class_name %> tools inherit from this class.
+    # Inherits from Tools::ApplicationTool for shared behavior.
+    class BaseTool < Tools::ApplicationTool
+    end
+  end
+end

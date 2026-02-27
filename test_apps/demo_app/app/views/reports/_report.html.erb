@@ -1,0 +1,26 @@
+<%= turbo_frame_tag dom_id(report) do %>
+  <div id="<%= dom_id(report) %>">
+    <p>
+      <strong>Title:</strong>
+      <%= report.title %>
+    </p>
+    <p>
+      <strong>Category:</strong>
+      <%= report.category %>
+    </p>
+    <p>
+      <strong>Status:</strong>
+      <%= report.status %>
+    </p>
+    <p>
+      <strong>Notes:</strong>
+      <%= report.notes %>
+    </p>
+
+    <p>
+      <%= link_to "Edit", edit_report_path(report) %> |
+      <%= button_to "Delete", report, method: :delete,
+            data: { turbo_confirm: "Are you sure?" } %>
+    </p>
+  </div>
+<% end %>

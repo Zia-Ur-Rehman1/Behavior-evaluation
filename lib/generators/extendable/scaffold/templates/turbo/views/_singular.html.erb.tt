@@ -1,0 +1,16 @@
+<%%= turbo_frame_tag dom_id(<%= singular_table_name %>) do %>
+  <div id="<%%= dom_id(<%= singular_table_name %>) %>">
+<% attributes.reject(&:password_digest?).each do |attribute| -%>
+    <p>
+      <strong><%= attribute.human_name %>:</strong>
+      <%%= <%= singular_table_name %>.<%= attribute.column_name %> %>
+    </p>
+<% end -%>
+
+    <p>
+      <%%= link_to "Edit", edit_<%= singular_table_name %>_path(<%= singular_table_name %>) %> |
+      <%%= button_to "Delete", <%= singular_table_name %>, method: :delete,
+            data: { turbo_confirm: "Are you sure?" } %>
+    </p>
+  </div>
+<%% end %>

@@ -1,0 +1,25 @@
+<p style="color: green"><%%= notice %></p>
+
+<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
+  <h1 style="margin:0;"><%= human_name.pluralize %></h1>
+  <%%= link_to "New <%= human_name %>", new_<%= singular_table_name %>_path,
+        style: "background:#3b82f6;color:#fff;padding:0.4rem 1rem;border-radius:0.375rem;text-decoration:none;" %>
+</div>
+
+<div id="modal"></div>
+
+<div style="overflow-x:auto;">
+  <table id="<%= plural_table_name %>-table" style="width:100%;border-collapse:collapse;font-size:0.9rem;">
+    <thead>
+      <tr style="background:#f3f4f6;text-align:left;">
+<% attributes.reject(&:password_digest?).each do |attribute| -%>
+        <th style="padding:0.6rem 0.75rem;border-bottom:2px solid #e5e7eb;font-weight:600;"><%= attribute.human_name %></th>
+<% end -%>
+        <th style="padding:0.6rem 0.75rem;border-bottom:2px solid #e5e7eb;font-weight:600;text-align:right;">Actions</th>
+      </tr>
+    </thead>
+    <tbody id="<%= plural_table_name %>">
+      <%%= render @<%= plural_table_name %> %>
+    </tbody>
+  </table>
+</div>

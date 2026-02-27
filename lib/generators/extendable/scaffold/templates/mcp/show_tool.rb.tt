@@ -1,0 +1,33 @@
+# frozen_string_literal: true
+
+module Tools
+  module <%= class_name.pluralize %>
+    # Retrieves a single <%= human_name.downcase %> by ID.
+    class ShowTool < BaseTool
+      tool_name "<%= singular_table_name %>_show"
+      description "Get a single <%= human_name.downcase %> by ID"
+
+      input_schema(
+        properties: {
+          id: { type: "integer", description: "The ID of the <%= human_name.downcase %>" }
+        },
+        required: ["id"]
+      )
+
+      class << self
+        def call(id:, server_context: nil)
+          record = <%= class_name %>.find(id)
+          MCP::Tool::Response.new([{
+            type: "text",
+            text: record.to_json
+          }])
+        rescue ActiveRecord::RecordNotFound
+          MCP::Tool::Response.new([{
+            type: "text",
+            text: JSON.generate({ error: "<%= human_name %> with id=#{id} was not found" })
+          }])
+        end
+      end
+    end
+  end
+end

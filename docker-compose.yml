@@ -1,0 +1,55 @@
+version: "3.9"
+
+services:
+  # -----------------------------------------------------------------------
+  # test — runs the RSpec suite inside a container
+  # -----------------------------------------------------------------------
+  test:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/gem
+      - bundle_cache:/usr/local/bundle
+    command: bundle exec rspec --format documentation
+    environment:
+      RAILS_ENV: test
+      BUNDLE_PATH: /usr/local/bundle
+
+  # -----------------------------------------------------------------------
+  # sample_app — creates a fresh Rails app that uses the local gem,
+  # then boots the server so you can manually test the generator.
+  #
+  # Usage:
+  #   docker-compose run --rm sample_app \
+  #     rails generate extendable:scaffold Post title:string body:text -t -m
+  # -----------------------------------------------------------------------
+  sample_app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/gem
+      - bundle_cache:/usr/local/bundle
+      - sample_app_data:/sample_app
+    working_dir: /sample_app
+    ports:
+      - "3000:3000"
+    environment:
+      RAILS_ENV: development
+      BUNDLE_PATH: /usr/local/bundle
+    command: >
+      bash -c "
+        if [ ! -f /sample_app/Gemfile ]; then
+          gem install rails --no-document &&
+          rails new /sample_app --database=sqlite3 --skip-bundle &&
+          echo '' >> /sample_app/Gemfile &&
+          echo 'gem \"extendable-rails\", path: \"/gem\"' >> /sample_app/Gemfile &&
+          cd /sample_app && bundle install
+        fi &&
+        cd /sample_app && rails server -b 0.0.0.0
+      "
+
+volumes:
+  bundle_cache:
+  sample_app_data:

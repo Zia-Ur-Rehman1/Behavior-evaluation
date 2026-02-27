@@ -1,0 +1,7 @@
+<%= turbo_stream.append "mcp-chat-messages" do %>
+  <div class="mcp-msg mcp-msg--error">
+    <span class="mcp-msg__bubble" style="background:#fef2f2;color:#b91c1c;border-color:#fecaca;">
+      &#9888; <%= html_escape(@error) %>
+    </span>
+  </div>
+<% end %>

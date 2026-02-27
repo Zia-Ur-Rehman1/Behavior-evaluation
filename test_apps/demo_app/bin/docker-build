@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+# Build the Docker image for the demo app.
+# Run from the demo_app directory: ./bin/docker-build
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+APP_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
+GEM_DIR="$(cd "$APP_DIR/../.." && pwd)"
+
+echo "==> Copying gem source into Docker build context..."
+rm -rf "$APP_DIR/gem"
+mkdir -p "$APP_DIR/gem"
+cp -r "$GEM_DIR/lib" "$APP_DIR/gem/lib"
+cp "$GEM_DIR/extendable-rails.gemspec" "$APP_DIR/gem/"
+
+echo "==> Building Docker image..."
+cd "$APP_DIR"
+docker build -t extendable-rails-demo .
+
+echo "==> Cleaning up gem copy..."
+rm -rf "$APP_DIR/gem"
+
+echo ""
+echo "Done! Run the app with:"
+echo "  docker run -p 3000:3000 -e GEMINI_API_KEY=your-key extendable-rails-demo"
+echo ""
+echo "Or with docker-compose:"
+echo "  GEMINI_API_KEY=your-key docker-compose up"

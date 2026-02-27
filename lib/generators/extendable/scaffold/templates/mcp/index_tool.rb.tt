@@ -1,0 +1,26 @@
+# frozen_string_literal: true
+
+module Tools
+  module <%= class_name.pluralize %>
+    # Lists all <%= human_name.pluralize.downcase %>.
+    class IndexTool < BaseTool
+      tool_name "<%= singular_table_name %>_list"
+      description "List all <%= human_name.pluralize.downcase %>"
+
+      input_schema(
+        properties: {},
+        required:   []
+      )
+
+      class << self
+        def call(server_context: nil)
+          records = <%= class_name %>.all
+          MCP::Tool::Response.new([{
+            type: "text",
+            text: records.to_json
+          }])
+        end
+      end
+    end
+  end
+end

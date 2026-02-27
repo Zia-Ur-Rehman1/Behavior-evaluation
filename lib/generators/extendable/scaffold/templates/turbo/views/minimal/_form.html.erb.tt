@@ -1,0 +1,20 @@
+<%%= form_with(model: <%= singular_table_name %>) do |form| %>
+  <%% <%= singular_table_name %>.errors.full_messages.each do |msg| %>
+    <p style="color:red;"><%%= msg %></p>
+  <%% end %>
+<% attributes.each do |attribute| -%>
+  <%%= form.label :<%= attribute.column_name %> %>
+<% if attribute.type == :text -%>
+  <%%= form.text_area :<%= attribute.column_name %> %><br>
+<% elsif attribute.type == :boolean -%>
+  <%%= form.check_box :<%= attribute.column_name %> %><br>
+<% elsif attribute.type == :date -%>
+  <%%= form.date_field :<%= attribute.column_name %> %><br>
+<% elsif attribute.type == :integer || attribute.type == :float || attribute.type == :decimal -%>
+  <%%= form.number_field :<%= attribute.column_name %> %><br>
+<% else -%>
+  <%%= form.text_field :<%= attribute.column_name %> %><br>
+<% end -%>
+<% end -%>
+  <%%= form.submit %>
+<%% end %>
